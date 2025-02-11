@@ -14,7 +14,7 @@ namespace WS.Report
         internal const string pc = "[pc]";
 
         private Label _SourceControl;
-        private VerticalPrinter _Printer;
+        private VerticalLablePrinter _Printer;
 
         [DebuggerNonUserCode]
         static WVerticalLabel()
@@ -80,7 +80,7 @@ namespace WS.Report
             get
             {
                 if (_Printer == null)
-                    _Printer = new VerticalPrinter(this);
+                    _Printer = new VerticalLablePrinter(this);
                 return _Printer;
             }
         }
@@ -119,6 +119,69 @@ namespace WS.Report
             if (Parent == null || Parent is WPage)
                 return;
             Parent.Controls.Remove(this);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            // Get the graphics object
+            Graphics g = e.Graphics;
+
+            // text to display
+            string displayText = Text;
+
+            // StringFormat for text alignment
+            StringFormat stringFormat = new StringFormat
+            {
+                LineAlignment = (StringAlignment)Methods.GetYAlign(TextAlign),
+                Alignment = (StringAlignment)Methods.GetXAlign(TextAlign),
+                Trimming = StringTrimming.Word
+            };
+
+            if (RightToLeft == RightToLeft.Yes)
+            {
+                stringFormat.FormatFlags |= StringFormatFlags.DirectionRightToLeft;
+            }
+
+            // Measure the text size
+            SizeF textSize = g.MeasureString(displayText, Font, ClientRectangle.Size, stringFormat);
+
+            // Create a rectangle for the text
+            Rectangle rect = new Rectangle(0, 0, (int)textSize.Height, (int)textSize.Width);
+
+            // if AutoSize is enabled
+            if (AutoSize)
+            {
+                Size = new Size(rect.Width, rect.Height);
+                AutoSize = false;
+            }
+
+            // Draw background and border
+            using (Brush brush = new SolidBrush(BackColor))
+            {
+                g.FillRectangle(brush, ClientRectangle);
+            }
+
+            if (BorderSize > 0)
+            {
+                using (Pen pen = new Pen(BorderColor, BorderSize) { DashStyle = Border })
+                {
+                    g.DrawRectangle(pen, ClientRectangle);
+                }
+            }
+
+            // Save the current graphics state
+            GraphicsState state = g.Save();
+
+            // Rotate and draw the text vertically
+            g.TranslateTransform(Width / 2, Height / 2);
+            g.RotateTransform(270);
+            g.TranslateTransform(-textSize.Height / 2, -textSize.Width / 2);
+
+            // Draw the text
+            g.DrawString(displayText, Font, new SolidBrush(ForeColor), new RectangleF(0, 0, textSize.Height, textSize.Width), stringFormat);
+
+            // Restore the graphics state
+            g.Restore(state);
         }
 
         public void ChangeText()

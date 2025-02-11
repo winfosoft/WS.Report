@@ -4,12 +4,12 @@ using System.Windows.Forms;
 
 namespace WS.Report
 {
-    public class VerticalPrinter : Printer
+    public class VerticalLablePrinter : Printer
     {
         private string text; // Stores the current text to print
         private string previousText; // Stores the previous text for pagination
 
-        public VerticalPrinter(IPrintableControl printControl) : base(printControl)
+        public VerticalLablePrinter(IPrintableControl printControl) : base(printControl)
 
         {
         }

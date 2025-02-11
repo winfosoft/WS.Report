@@ -55,7 +55,7 @@ namespace WS.Report
             BackColor = Color.Transparent;
             BorderStyle = BorderStyle.FixedSingle;
             Name = "Section";
-            Size = new Size(489, 355);
+            Size = new Size(400, 480);
             ResumeLayout(false);
         }
 

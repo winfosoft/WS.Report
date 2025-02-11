@@ -70,7 +70,7 @@ namespace WS.Report
 
         private void InitializeComponent()
         {
-            SuspendLayout();
+            // SuspendLayout();
 
             AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;

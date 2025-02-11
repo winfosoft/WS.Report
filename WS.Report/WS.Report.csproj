@@ -58,7 +58,7 @@
     <Compile Include="TableListPrinter.cs" />
     <Compile Include="TextPrinter.cs" />
     <Compile Include="VerticalAlignment.cs" />
-    <Compile Include="VerticalPrinter.cs" />
+    <Compile Include="VerticalLablePrinter.cs" />
     <Compile Include="WLable.cs">
       <SubType>Component</SubType>
     </Compile>
